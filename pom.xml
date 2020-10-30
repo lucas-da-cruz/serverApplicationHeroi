@@ -8,10 +8,10 @@
 		<version>2.3.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.cs</groupId>
-	<artifactId>3cs</artifactId>
+	<groupId>br.com.herois</groupId>
+	<artifactId>herois</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Cs</name>
+	<name>Herois</name>
 	<description>Projeto backend do projeto Heroi</description>
 
 	<properties>
@@ -92,6 +92,19 @@
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
 		</dependency> !-->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.4.0</version>
+			<scope>test</scope>
+		</dependency>
 
 
 	</dependencies>
