@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+//@Service
 public class PasswordService {
 
-    @Autowired
+    /*@Autowired
     UsuarioAdminService usuarioAdminService;
     @Autowired
     TokenService tokenService;
     @Autowired
     private AuthenticationManager authManager;
     @Value("${fronted.domain}")
-    private String domainFrontend;
+    private String domainFrontend;*/
 
     /*public String generateNewPass(String email){
         String subject = "Geração de nova senha";
