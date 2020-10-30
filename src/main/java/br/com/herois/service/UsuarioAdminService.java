@@ -50,12 +50,6 @@ public class UsuarioAdminService {
         return usuarioAdminUpdated;
     }
 
-    public UsuarioAdmin updatePassword(Optional<UsuarioAdmin> usuarioAdmin, String newPassword){
-        usuarioAdmin.get().setSenha(new BCryptPasswordEncoder().encode(newPassword));
-        UsuarioAdmin usuarioAdminUpdated = usuarioAdminRepository.save(usuarioAdmin.get());
-        return usuarioAdminUpdated;
-    }
-
     public void deleteById(Long id){
         usuarioAdminRepository.deleteById(id);
     }

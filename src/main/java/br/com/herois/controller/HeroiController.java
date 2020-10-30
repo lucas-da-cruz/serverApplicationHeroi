@@ -1,9 +1,14 @@
 package br.com.herois.controller;
 
+import br.com.herois.config.security.TokenService;
+import br.com.herois.model.dto.HeroiDto;
+import br.com.herois.model.dto.HeroiTabelaDto;
 import br.com.herois.model.entities.Heroi;
+import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.model.form.HeroiForm;
 import br.com.herois.service.HeroiService;
 import br.com.herois.validation.ErroDeFormularioDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -17,14 +22,17 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/heroi")
 public class HeroiController {
 
     @Autowired
     HeroiService heroiService;
+    @Autowired
+    TokenService tokenService;
 
     @GetMapping
-    private ResponseEntity<List<Heroi>> findAll(){
-        List<Heroi> herois = heroiService.findAll();
+    private ResponseEntity<?> findAll(){
+        List<HeroiTabelaDto> herois = heroiService.findByStatus();
         return ResponseEntity.ok(herois);
     }
 
@@ -39,14 +47,43 @@ public class HeroiController {
 
     @PostMapping
     @Transactional
-    private ResponseEntity<?> save(@RequestBody @Valid HeroiForm form, UriComponentsBuilder uriBuilder){
+    private ResponseEntity<?> save(@RequestBody @Valid HeroiForm form, UriComponentsBuilder uriBuilder, @RequestHeader String authorization){
         try{
-            Heroi heroi = heroiService.insert(form);
+            Long id = tokenService.getId(authorization);
+            Heroi heroi = heroiService.insert(form, id);
             URI uri = uriBuilder.path("/usuario/{id}").buildAndExpand(heroi.getId()).toUri();
-            return ResponseEntity.created(uri).body(heroi);
+            return ResponseEntity.created(uri).body(new HeroiDto(heroi));
         } catch (AuthenticationException e){
             return ResponseEntity.badRequest().body(new ErroDeFormularioDto("AuthenticationException", e.getMessage()));
         }
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    private ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid HeroiForm newHeroi, @RequestHeader String authorization){
+        Optional<Heroi> heroi = heroiService.findById(id);
+        if(!heroi.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+        if(heroi.get().getUsuarioAdmin().getId() != tokenService.getId(authorization)){
+            return ResponseEntity.badRequest().body(new ErroDeFormularioDto("Token inválido", "Token não coincide com o usuário"));
+        }
+        Heroi heroiUpdated = heroiService.update(newHeroi, heroi.get());
+        return ResponseEntity.ok(new HeroiDto(heroiUpdated));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    private ResponseEntity<?> desativeById(@PathVariable Long id, @RequestHeader String authorization){
+        Optional<Heroi> heroi = heroiService.findById(id);
+        if(!heroi.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+        if(heroi.get().getUsuarioAdmin().getId() != tokenService.getId(authorization)){
+            return ResponseEntity.badRequest().body(new ErroDeFormularioDto("Token inválido", "Token não coincide com o usuário"));
+        }
+        heroiService.desative(heroi.get());
+        return ResponseEntity.ok().build();
     }
 
 }
