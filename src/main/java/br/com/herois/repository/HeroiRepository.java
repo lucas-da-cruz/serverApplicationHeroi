@@ -3,8 +3,6 @@ package br.com.herois.repository;
 import br.com.herois.model.entities.Heroi;
 import br.com.herois.model.form.HeroiForm;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +16,4 @@ public interface HeroiRepository extends JpaRepository<Heroi, Long> {
     Heroi save(HeroiForm usuarioAdmin);
 
     List<Heroi> findByStatus(Boolean status);
-
-    /*@Query("SELECT h FROM heroi h WHERE h.status = :status")
-    List<Heroi> findAllAtivo(@Param("status") Long status);*/
 }
