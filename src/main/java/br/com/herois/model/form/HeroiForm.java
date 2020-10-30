@@ -3,6 +3,7 @@ package br.com.herois.model.form;
 import br.com.herois.model.entities.Heroi;
 import br.com.herois.model.entities.Poder;
 import br.com.herois.model.entities.Universo;
+import br.com.herois.model.entities.UsuarioAdmin;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,14 +15,15 @@ public class HeroiForm {
     @NotBlank
     private String nome;
     @NotNull
-    @NotBlank
     private Universo universo;
     @NotNull
-    @NotBlank
     private List<Poder> poder = new ArrayList<>();
+    @NotNull
+    private Boolean status;
+    private UsuarioAdmin usuarioAdmin;
 
     public Heroi converterHeroi(){
-        return new Heroi(nome, universo, poder);
+        return new Heroi(nome, universo, poder, status, usuarioAdmin);
     }
 
     public String getNome() {
@@ -46,5 +48,21 @@ public class HeroiForm {
 
     public void setPoder(List<Poder> poder) {
         this.poder = poder;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public UsuarioAdmin getUsuarioAdmin() {
+        return usuarioAdmin;
+    }
+
+    public void setUsuarioAdmin(UsuarioAdmin usuarioAdmin) {
+        this.usuarioAdmin = usuarioAdmin;
     }
 }

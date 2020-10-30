@@ -15,4 +15,5 @@ public interface HeroiRepository extends JpaRepository<Heroi, Long> {
 
     Heroi save(HeroiForm usuarioAdmin);
 
+    List<Heroi> findByStatus(Boolean status);
 }
