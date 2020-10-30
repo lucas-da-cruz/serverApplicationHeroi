@@ -12,7 +12,7 @@
 	<artifactId>3cs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Cs</name>
-	<description>Projeto backend do 3Cs para usuários administrativos</description>
+	<description>Projeto backend do projeto Heroi</description>
 
 	<properties>
 		<java.version>1.8</java.version>
