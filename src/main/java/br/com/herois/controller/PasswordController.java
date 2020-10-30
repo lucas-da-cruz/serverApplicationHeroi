@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@RestController
+//@RestController
 public class PasswordController {
 
-    @Autowired
+    /*@Autowired
     PasswordService passwordService;
     @Autowired
     UsuarioAdminService usuarioAdminService;
 
-    /*@PostMapping("/pass")
+    @PostMapping("/pass")
     public ResponseEntity newPassword(@RequestBody @Valid EmailForm email){
         try{
             if(!usuarioAdminService.isEmailExist(email.getEmail())){
@@ -33,7 +33,7 @@ public class PasswordController {
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ErroDeFormularioDto("Email não enviado", e.getMessage()));
         }
-    }*/
+    }
 
     @PostMapping("/pass/{id}/{email}/{senha}")
     public ResponseEntity resetPassword(@PathVariable Long id, @PathVariable String email, @PathVariable String senha, @RequestBody @Valid SenhaForm senhaForm){
@@ -55,5 +55,5 @@ public class PasswordController {
         catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ErroDeFormularioDto("Algo inesperado aconteceu", e.getMessage()));
         }
-    }
+    }*/
 }
