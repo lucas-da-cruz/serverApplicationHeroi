@@ -1,8 +1,12 @@
 package br.com.herois.repository;
 
-import br.com.herois.model.entities.Universo;
+import br.com.herois.model.entities.Poder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PoderRepository extends JpaRepository<Universo, Long> {
+import java.util.List;
+
+public interface PoderRepository extends JpaRepository<Poder, Long> {
+
+    List<Poder> findAll();
 
 }
