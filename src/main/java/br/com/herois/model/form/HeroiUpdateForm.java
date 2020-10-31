@@ -3,15 +3,13 @@ package br.com.herois.model.form;
 import br.com.herois.model.entities.Heroi;
 import br.com.herois.model.entities.Poder;
 import br.com.herois.model.entities.Universo;
-import br.com.herois.model.entities.UsuarioAdmin;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeroiForm {
+public class HeroiUpdateForm {
 
     @NotBlank
     private String nome;
@@ -21,11 +19,9 @@ public class HeroiForm {
     private List<Poder> poder = new ArrayList<>();
     @NotNull
     private Boolean status;
-    private UsuarioAdmin usuarioAdmin;
-    private LocalDateTime dataCadastrada;
 
     public Heroi converterHeroi(){
-        return new Heroi(nome, universo, poder, status, usuarioAdmin, dataCadastrada);
+        return new Heroi(nome, universo, poder, status);
     }
 
     public String getNome() {
@@ -60,19 +56,4 @@ public class HeroiForm {
         this.status = status;
     }
 
-    public UsuarioAdmin getUsuarioAdmin() {
-        return usuarioAdmin;
-    }
-
-    public void setUsuarioAdmin(UsuarioAdmin usuarioAdmin) {
-        this.usuarioAdmin = usuarioAdmin;
-    }
-
-    public LocalDateTime getDataCadastrada() {
-        return dataCadastrada;
-    }
-
-    public void setDataCadastrada(LocalDateTime dataCadastrada) {
-        this.dataCadastrada = dataCadastrada;
-    }
 }

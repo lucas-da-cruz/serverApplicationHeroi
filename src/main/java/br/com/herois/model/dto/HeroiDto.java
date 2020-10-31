@@ -4,6 +4,8 @@ import br.com.herois.model.entities.Heroi;
 import br.com.herois.model.entities.Poder;
 import br.com.herois.model.entities.Universo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class HeroiDto {
     private Universo universo;
     private List<Poder> poder = new ArrayList<>();
     private Boolean status;
+    private String dataCadastrada;
 
     public HeroiDto() {
     }
@@ -24,6 +27,8 @@ public class HeroiDto {
         universo = heroi.getUniverso();
         poder = heroi.getPoder();
         status = heroi.getStatus();
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dataCadastrada = heroi.getDataCadastrada().format(formatoData);
     }
 
     public Long getId() {
@@ -64,5 +69,13 @@ public class HeroiDto {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getDataCadastrada() {
+        return dataCadastrada;
+    }
+
+    public void setDataCadastrada(String dataCadastrada) {
+        this.dataCadastrada = dataCadastrada;
     }
 }

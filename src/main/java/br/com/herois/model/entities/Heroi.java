@@ -1,6 +1,7 @@
 package br.com.herois.model.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +21,25 @@ public class Heroi {
     private Boolean status;
     @ManyToOne(fetch = FetchType.EAGER)
     private UsuarioAdmin usuarioAdmin;
+    private LocalDateTime dataCadastrada;
 
     public Heroi() {
     }
 
-    public Heroi(String nome, Universo universo, List<Poder> poder, Boolean status, UsuarioAdmin usuarioAdmin) {
+    public Heroi(String nome, Universo universo, List<Poder> poder, Boolean status, UsuarioAdmin usuarioAdmin, LocalDateTime dataCadastrada) {
         this.nome = nome;
         this.universo = universo;
         this.poder = poder;
         this.status = status;
         this.usuarioAdmin = usuarioAdmin;
+        this.dataCadastrada = dataCadastrada;
+    }
+
+    public Heroi(String nome, Universo universo, List<Poder> poder, Boolean status) {
+        this.nome = nome;
+        this.universo = universo;
+        this.poder = poder;
+        this.status = status;
     }
 
     public Long getId() {
@@ -78,5 +88,13 @@ public class Heroi {
 
     public void setUsuarioAdmin(UsuarioAdmin usuarioAdmin) {
         this.usuarioAdmin = usuarioAdmin;
+    }
+
+    public LocalDateTime getDataCadastrada() {
+        return dataCadastrada;
+    }
+
+    public void setDataCadastrada(LocalDateTime dataCadastrada) {
+        this.dataCadastrada = dataCadastrada;
     }
 }
