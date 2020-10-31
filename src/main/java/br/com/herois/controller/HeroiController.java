@@ -4,8 +4,8 @@ import br.com.herois.config.security.TokenService;
 import br.com.herois.model.dto.HeroiDto;
 import br.com.herois.model.dto.HeroiTabelaDto;
 import br.com.herois.model.entities.Heroi;
-import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.model.form.HeroiForm;
+import br.com.herois.model.form.HeroiUpdateForm;
 import br.com.herois.service.HeroiService;
 import br.com.herois.validation.ErroDeFormularioDto;
 
@@ -31,8 +31,9 @@ public class HeroiController {
     TokenService tokenService;
 
     @GetMapping
-    private ResponseEntity<?> findAll(){
-        List<HeroiTabelaDto> herois = heroiService.findByStatus();
+    private ResponseEntity<?> findAll(@RequestHeader String authorization){
+        Long id = tokenService.getId(authorization);
+        List<HeroiTabelaDto> herois = heroiService.findByStatusAndUsuarioAdminId(id);
         return ResponseEntity.ok(herois);
     }
 
@@ -42,11 +43,14 @@ public class HeroiController {
         if(!heroi.isPresent()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(heroi);
+        if(heroi.get().getUsuarioAdmin().getId() != tokenService.getId(authorization)){
+            return ResponseEntity.badRequest().body(new ErroDeFormularioDto("Token inválido", "Token não coincide com o usuário"));
+        }
+        return ResponseEntity.ok(new HeroiDto(heroi.get()));
     }
 
-    @PostMapping
     @Transactional
+    @PostMapping
     private ResponseEntity<?> save(@RequestBody @Valid HeroiForm form, UriComponentsBuilder uriBuilder, @RequestHeader String authorization){
         try{
             Long id = tokenService.getId(authorization);
@@ -58,9 +62,9 @@ public class HeroiController {
         }
     }
 
-    @PutMapping("/{id}")
     @Transactional
-    private ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid HeroiForm newHeroi, @RequestHeader String authorization){
+    @PutMapping("/{id}")
+    private ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid HeroiUpdateForm newHeroi, @RequestHeader String authorization){
         Optional<Heroi> heroi = heroiService.findById(id);
         if(!heroi.isPresent()){
             return ResponseEntity.notFound().build();
@@ -72,8 +76,8 @@ public class HeroiController {
         return ResponseEntity.ok(new HeroiDto(heroiUpdated));
     }
 
-    @DeleteMapping("/{id}")
     @Transactional
+    @DeleteMapping("/{id}")
     private ResponseEntity<?> desativeById(@PathVariable Long id, @RequestHeader String authorization){
         Optional<Heroi> heroi = heroiService.findById(id);
         if(!heroi.isPresent()){

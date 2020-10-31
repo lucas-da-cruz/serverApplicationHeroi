@@ -1,17 +1,17 @@
 package br.com.herois.service;
 
 import br.com.herois.model.dto.HeroiTabelaDto;
-import br.com.herois.model.dto.UsuarioAdminDto;
 import br.com.herois.model.entities.Heroi;
 import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.model.form.HeroiForm;
-import br.com.herois.model.form.UsuarioAdminFormUpdate;
+import br.com.herois.model.form.HeroiUpdateForm;
 import br.com.herois.repository.HeroiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +34,8 @@ public class HeroiService {
         return heroiTabelaDto;
     }
 
-    public List<HeroiTabelaDto> findByStatus() {
-        List<Heroi> heroiList = heroiRepository.findByStatus(true);
+    public List<HeroiTabelaDto> findByStatusAndUsuarioAdminId(Long id) {
+        List<Heroi> heroiList = heroiRepository.findByStatusAndUsuarioAdminId(true, id);
         List<HeroiTabelaDto> heroiTabelaDto = new ArrayList<>();
         heroiList.forEach(a -> {
             heroiTabelaDto.add(new HeroiTabelaDto(a));
@@ -50,15 +50,15 @@ public class HeroiService {
     public Heroi insert(HeroiForm form, Long id) {
         Optional<UsuarioAdmin> usuarioAdmin = usuarioAdminService.findById(id);
         form.setUsuarioAdmin(usuarioAdmin.get());
+        form.setDataCadastrada(LocalDateTime.now());
         Heroi heroi = form.converterHeroi();
         return heroiRepository.save(heroi);
     }
 
-    public Heroi update(HeroiForm heroiNew, Heroi heroi){
+    public Heroi update(HeroiUpdateForm heroiNew, Heroi heroi){
         heroi.setNome(heroiNew.getNome());
         heroi.setPoder(heroiNew.getPoder());
         heroi.setUniverso(heroiNew.getUniverso());
-        heroi.setStatus(heroiNew.getStatus());
         return heroiRepository.save(heroi);
     }
 
