@@ -12,13 +12,9 @@ public class UsuarioAdminFormUpdate {
         @NotBlank
         @Email
         private String email;
-        @NotBlank
-        private String telefone;
-        @NotBlank
-        private String endereco;
 
         public UsuarioAdmin converterUsuario(){
-            return new UsuarioAdmin(nome, email, telefone, endereco);
+            return new UsuarioAdmin(nome, email);
         }
 
         public String getNome() {
@@ -37,19 +33,4 @@ public class UsuarioAdminFormUpdate {
             this.email = email;
         }
 
-        public String getTelefone() {
-            return telefone;
-        }
-
-        public void setTelefone(String telefone) {
-            this.telefone = telefone;
-        }
-
-        public String getEndereco() {
-            return endereco;
-        }
-
-        public void setEndereco(String endereco) {
-            this.endereco = endereco;
-        }
     }

@@ -31,7 +31,7 @@ public class UsuarioAdmin implements UserDetails {
 		this.senha = senha;
 	}
 
-	public UsuarioAdmin(String nome, String email, String telefone, String endereco) {
+	public UsuarioAdmin(String nome, String email) {
 		this.nome = nome;
 		this.email = email;
 	}

@@ -46,8 +46,6 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/auth").permitAll()
 				.antMatchers(HttpMethod.POST, "/usuarioAdmin").permitAll()
-				.antMatchers(HttpMethod.POST, "/pass").permitAll()
-				.antMatchers(HttpMethod.POST, "/pass/{id}/{email}/{senha}").permitAll()
 				.anyRequest().authenticated()
 				.and().cors()
 				.and().csrf().disable()
@@ -55,9 +53,10 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 				.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioAdminRepository), UsernamePasswordAuthenticationFilter.class);
 	}
 	
-	//Configuracoes de recursos estaticos(js, css, imagens, etc.)
+	//recursos estaticos: js, css, imagens, etc
 	@Override
 	public void configure(WebSecurity web) throws Exception {
+
 	}
 	
 }
