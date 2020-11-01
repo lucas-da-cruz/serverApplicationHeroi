@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +33,8 @@ public class HeroiService {
         return heroiTabelaDto;
     }
 
-    public List<HeroiTabelaDto> findByStatusAndUsuarioAdminId(Long id) {
-        List<Heroi> heroiList = heroiRepository.findByStatusAndUsuarioAdminId(true, id);
+    public List<HeroiTabelaDto> findByStatusAndUsuarioAdminId(Boolean status, Long id) {
+        List<Heroi> heroiList = heroiRepository.findByStatusAndUsuarioAdminId(status, id);
         List<HeroiTabelaDto> heroiTabelaDto = new ArrayList<>();
         heroiList.forEach(a -> {
             heroiTabelaDto.add(new HeroiTabelaDto(a));
@@ -62,9 +61,12 @@ public class HeroiService {
         return heroiRepository.save(heroi);
     }
 
-
-    public void desative(Heroi heroi) {
-        heroi.setStatus(false);
-        heroiRepository.save(heroi);
+    public Heroi alteraStatus(Heroi heroi) {
+        if(!heroi.getStatus()){
+            heroi.setStatus(true);
+        } else {
+            heroi.setStatus(false);
+        }
+        return heroiRepository.save(heroi);
     }
 }

@@ -3,6 +3,7 @@ package br.com.herois.controller;
 import br.com.herois.model.entities.Universo;
 import br.com.herois.service.UniversoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class UniversoController {
     UniversoService universoService;
 
     @GetMapping
+    @Cacheable("universocache")
     private ResponseEntity<List<Universo>> findAll(){
         List<Universo> universos = universoService.findAll();
         return ResponseEntity.ok(universos);

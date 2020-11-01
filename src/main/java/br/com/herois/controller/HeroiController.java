@@ -31,10 +31,15 @@ public class HeroiController {
     TokenService tokenService;
 
     @GetMapping
-    private ResponseEntity<?> findAll(@RequestHeader String authorization){
+    private ResponseEntity<?> findAll(@RequestHeader String authorization, @RequestParam(required = false) Boolean status){
         Long id = tokenService.getId(authorization);
-        List<HeroiTabelaDto> herois = heroiService.findByStatusAndUsuarioAdminId(id);
-        return ResponseEntity.ok(herois);
+        if(status == null){
+            List<HeroiTabelaDto> herois = heroiService.findByStatusAndUsuarioAdminId(true, id);
+            return ResponseEntity.ok(herois);
+        } else {
+            List<HeroiTabelaDto> herois = heroiService.findByStatusAndUsuarioAdminId(status, id);
+            return ResponseEntity.ok(herois);
+        }
     }
 
     @GetMapping("/{id}")
@@ -78,7 +83,7 @@ public class HeroiController {
 
     @Transactional
     @DeleteMapping("/{id}")
-    private ResponseEntity<?> desativeById(@PathVariable Long id, @RequestHeader String authorization){
+    private ResponseEntity<?> alteraStatus(@PathVariable Long id, @RequestHeader String authorization){
         Optional<Heroi> heroi = heroiService.findById(id);
         if(!heroi.isPresent()){
             return ResponseEntity.notFound().build();
@@ -86,7 +91,7 @@ public class HeroiController {
         if(heroi.get().getUsuarioAdmin().getId() != tokenService.getId(authorization)){
             return ResponseEntity.badRequest().body(new ErroDeFormularioDto("Token inválido", "Token não coincide com o usuário"));
         }
-        heroiService.desative(heroi.get());
+        heroiService.alteraStatus(heroi.get());
         return ResponseEntity.ok().build();
     }
 
