@@ -8,18 +8,17 @@ import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.model.form.HeroiForm;
 import br.com.herois.repository.HeroiRepository;
 import org.junit.Test;
-import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -41,6 +40,7 @@ public class HeroiServiceTest {
      */
     @Test
     public void testFindByStatusAndUsuarioAdminId(){
+        //Mockagem
         List<Heroi> listHeroiMock = new ArrayList<>();
         Heroi heroi1 = new Heroi("Flash", new Universo(1l, "Trainee Comics"), Arrays.asList(new Poder(1l, "Velocidade")), true);
         Heroi heroi2 = new Heroi("Super Choque", new Universo(1l, "EY Comics"), Arrays.asList(new Poder(1l, "Choque")), true);
@@ -48,8 +48,10 @@ public class HeroiServiceTest {
         listHeroiMock.add(heroi2);
         when(heroiRepository.findByStatusAndUsuarioAdminId(true, 1l)).thenReturn(Arrays.asList(heroi1, heroi2));
 
+        //Ação
         List<HeroiTabelaDto> listHeroi = heroiService.findByStatusAndUsuarioAdminId(true, 1l);
 
+        //Assertividade
         assertEquals(2, listHeroi.size());
         verify(heroiRepository, times(1)).findByStatusAndUsuarioAdminId(true, 1l);
 
@@ -58,5 +60,42 @@ public class HeroiServiceTest {
 
         assertEquals("Trainee Comics", listHeroi.get(0).getUniverso().getNome());
         assertEquals("EY Comics", listHeroi.get(1).getUniverso().getNome());
+    }
+
+    /**
+     * Testa o método insert da classe heroiService, realizando a mockagem do objeto do tipo HeroiForm,
+     * e validando se será enviado para o método save do JPA as informações corretas de Heroi.
+     */
+    @Test
+    public void teste(){
+        //Mockagem
+        HeroiForm heroiForm = new HeroiForm();
+        heroiForm.setNome("Flash");
+        heroiForm.setStatus(true);
+        heroiForm.setUniverso(new Universo(1l, "EY Comics"));
+        heroiForm.setPoder(Arrays.asList(new Poder(1l, "Velocidade")));
+        UsuarioAdmin usuarioAdmin = new UsuarioAdmin("UserTest", "usertest@usertest");
+        usuarioAdmin.setId(1l);
+        heroiForm.setUsuarioAdmin(usuarioAdmin);
+
+        Heroi heroi = heroiForm.converterHeroi();
+
+        when(usuarioAdminService.findById(1l)).thenReturn(Optional.of(usuarioAdmin));
+        when(heroiRepository.save((Heroi) any())).thenReturn(heroi);
+
+        //Ação
+        Heroi heroiSaved = heroiService.insert(heroiForm, 1l);
+
+        //Assertividade
+        verify(usuarioAdminService, times(1)).findById(1l);
+        verify(heroiRepository, times(1)).save((Heroi) any());
+
+        assertEquals(heroiForm.getNome(), heroiSaved.getNome());
+        assertEquals(heroiForm.getStatus(), heroiSaved.getStatus());
+        assertEquals(heroiForm.getUniverso().getNome(), heroiSaved.getUniverso().getNome());
+        assertEquals(heroiForm.getPoder().get(0).getNome(), heroiSaved.getPoder().get(0).getNome());
+        assertEquals(heroiForm.getUsuarioAdmin().getId(), heroiSaved.getUsuarioAdmin().getId());
+        assertEquals(heroiForm.getUsuarioAdmin().getNome(), heroiSaved.getUsuarioAdmin().getNome());
+        assertEquals(heroiForm.getUsuarioAdmin().getEmail(), heroiSaved.getUsuarioAdmin().getEmail());
     }
 }

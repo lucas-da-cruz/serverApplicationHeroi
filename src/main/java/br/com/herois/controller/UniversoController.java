@@ -19,7 +19,7 @@ public class UniversoController {
     UniversoService universoService;
 
     @GetMapping
-    @Cacheable(value = "universocache")
+    @Cacheable("universocache")
     private ResponseEntity<List<Universo>> findAll(){
         List<Universo> universos = universoService.findAll();
         return ResponseEntity.ok(universos);
