@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +23,7 @@ public class UsuarioAdminService {
     public List<UsuarioAdmin> findAll() {
         return usuarioAdminRepository.findAll();
     }
+
 
     public UsuarioAdmin insert(UsuarioAdminForm form) {
         if (isEmailExist(form.getEmail())) {

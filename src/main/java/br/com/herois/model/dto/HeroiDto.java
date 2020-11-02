@@ -4,7 +4,6 @@ import br.com.herois.model.entities.Heroi;
 import br.com.herois.model.entities.Poder;
 import br.com.herois.model.entities.Universo;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
