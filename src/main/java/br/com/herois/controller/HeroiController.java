@@ -82,7 +82,7 @@ public class HeroiController {
     }
 
     @Transactional
-    @DeleteMapping("/{id}")
+    @PostMapping("/alteraStatus/{id}")
     private ResponseEntity<?> alteraStatus(@PathVariable Long id, @RequestHeader String authorization){
         Optional<Heroi> heroi = heroiService.findById(id);
         if(!heroi.isPresent()){

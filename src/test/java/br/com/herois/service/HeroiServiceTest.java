@@ -6,6 +6,7 @@ import br.com.herois.model.entities.Poder;
 import br.com.herois.model.entities.Universo;
 import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.model.form.HeroiForm;
+import br.com.herois.model.form.HeroiUpdateForm;
 import br.com.herois.repository.HeroiRepository;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -65,9 +66,11 @@ public class HeroiServiceTest {
     /**
      * Testa o método insert da classe heroiService, realizando a mockagem do objeto do tipo HeroiForm,
      * e validando se será enviado para o método save do JPA as informações corretas de Heroi.
+     *
+     * Resultado esperado: um objeto tipo Heroi, com os atributos esperados conforme passado como parametro.
      */
     @Test
-    public void teste(){
+    public void testeInsertNewHeroi(){
         //Mockagem
         HeroiForm heroiForm = new HeroiForm();
         heroiForm.setNome("Flash");
@@ -98,4 +101,36 @@ public class HeroiServiceTest {
         assertEquals(heroiForm.getUsuarioAdmin().getNome(), heroiSaved.getUsuarioAdmin().getNome());
         assertEquals(heroiForm.getUsuarioAdmin().getEmail(), heroiSaved.getUsuarioAdmin().getEmail());
     }
+
+    /**
+     * Testa o método update da classe heroiService, realizando a mockagem do objeto do tipo HeroiUpdateForm,
+     * e validando se será enviado para o método save do JPA as informações corretas de Heroi.
+     *
+     * Resultado esperado: um objeto tipo Heroi, com os atributos esperados conforme passado como parametro.
+     */
+    @Test
+    public void testeUpdateNewHeroi(){
+        //Mockagem
+        HeroiUpdateForm heroiUpdateForm = new HeroiUpdateForm();
+        heroiUpdateForm.setNome("Flash");
+        heroiUpdateForm.setStatus(true);
+        heroiUpdateForm.setUniverso(new Universo(1l, "Trainee Comics"));
+        heroiUpdateForm.setPoder(Arrays.asList(new Poder(1l, "Velocidade")));
+
+        Heroi heroi = new Heroi("Super Choque", new Universo(1l, "EY Comics"), Arrays.asList(new Poder(1l, "Choque")), true);
+
+        when(heroiRepository.save((Heroi) any())).thenReturn(heroi);
+
+        //Ação
+        Heroi heroiSaved = heroiService.update(heroiUpdateForm, heroi);
+
+        //Assertividade
+        verify(heroiRepository, times(1)).save((Heroi) any());
+
+        assertEquals(heroiUpdateForm.getNome(), heroiSaved.getNome());
+        assertEquals(heroiUpdateForm.getStatus(), heroiSaved.getStatus());
+        assertEquals(heroiUpdateForm.getUniverso().getNome(), heroiSaved.getUniverso().getNome());
+        assertEquals(heroiUpdateForm.getPoder().get(0).getNome(), heroiSaved.getPoder().get(0).getNome());
+    }
+
 }
