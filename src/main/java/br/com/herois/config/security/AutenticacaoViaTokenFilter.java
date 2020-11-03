@@ -2,6 +2,7 @@ package br.com.herois.config.security;
 
 import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.repository.UsuarioAdminRepository;
+import br.com.herois.service.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

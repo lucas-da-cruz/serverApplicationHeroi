@@ -1,4 +1,4 @@
-package br.com.herois.config.security;
+package br.com.herois.service;
 
 import br.com.herois.model.entities.UsuarioAdmin;
 import io.jsonwebtoken.Claims;
