@@ -1,5 +1,6 @@
 package br.com.herois.service;
 
+import br.com.herois.config.security.TokenService;
 import br.com.herois.model.entities.UsuarioAdmin;
 import br.com.herois.model.exception.EmailExistenteException;
 import br.com.herois.model.form.UsuarioAdminForm;
@@ -19,6 +20,8 @@ public class UsuarioAdminService {
 
     @Autowired
     UsuarioAdminRepository usuarioAdminRepository;
+    @Autowired
+    TokenService tokenService;
 
     public List<UsuarioAdmin> findAll() {
         return usuarioAdminRepository.findAll();
@@ -57,6 +60,13 @@ public class UsuarioAdminService {
     public boolean isEmailExist(String email){
         Optional<UsuarioAdmin> usuario = usuarioAdminRepository.findByEmail(email);
         return usuario.isPresent();
+    }
+
+    public String getFisrtName(String token){
+        Optional<UsuarioAdmin> usuarioAdmin = findById(tokenService.getId(token));
+        String name = usuarioAdmin.get().getNome();
+        name = name.substring(0, name.lastIndexOf(' '));
+        return name;
     }
 
 
