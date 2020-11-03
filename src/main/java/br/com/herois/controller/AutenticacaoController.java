@@ -28,6 +28,8 @@ public class AutenticacaoController {
     private AuthenticationManager authManager;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UsuarioAdminService usuarioAdminService;
 
     @PostMapping("/auth")
     public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm user){
@@ -39,9 +41,10 @@ public class AutenticacaoController {
             List<String> authorities = authentication.getAuthorities().stream()
                     .map(a -> ((GrantedAuthority) a).getAuthority()).collect(Collectors.toList());
 
+            String nome = usuarioAdminService.getFisrtName(token);
 
-            return ResponseEntity.ok(new TokenDto(token, "Bearer", authorities));
-        } catch (AuthenticationException e){
+            return ResponseEntity.ok(new TokenDto(token, "Bearer", authorities, nome));
+            } catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }
     }

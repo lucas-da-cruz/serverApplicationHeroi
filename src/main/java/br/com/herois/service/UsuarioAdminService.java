@@ -61,4 +61,11 @@ public class UsuarioAdminService {
         return usuario.isPresent();
     }
 
+    public String getFisrtName(String token){
+        Optional<UsuarioAdmin> usuarioAdmin = findById(tokenService.getId(token));
+        String name = usuarioAdmin.get().getNome();
+        name = name.substring(0, name.lastIndexOf(' '));
+        return name;
+    }
+
 }
