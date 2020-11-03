@@ -2,6 +2,7 @@ package br.com.herois.config.security;
 
 import br.com.herois.repository.UsuarioAdminRepository;
 import br.com.herois.service.AutenticacaoService;
+import br.com.herois.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

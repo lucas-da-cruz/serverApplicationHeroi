@@ -1,6 +1,6 @@
 package br.com.herois.controller;
 
-import br.com.herois.config.security.TokenService;
+import br.com.herois.service.TokenService;
 import br.com.herois.model.dto.TokenDto;
 import br.com.herois.model.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;

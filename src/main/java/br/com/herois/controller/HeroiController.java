@@ -1,6 +1,6 @@
 package br.com.herois.controller;
 
-import br.com.herois.config.security.TokenService;
+import br.com.herois.service.TokenService;
 import br.com.herois.model.dto.HeroiDto;
 import br.com.herois.model.dto.HeroiTabelaDto;
 import br.com.herois.model.entities.Heroi;
